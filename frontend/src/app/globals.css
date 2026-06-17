@@ -1,0 +1,118 @@
+@import "tailwindcss";
+@source "../app/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../components/**/*.{js,ts,jsx,tsx,mdx}";
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 40%, #eef2ff 100%);
+    min-height: 100vh;
+    color: #0f172a;
+  }
+}
+
+@layer utilities {
+  /* ── Glassmorphism card ── */
+  .glass {
+    background: rgba(255, 255, 255, 0.80);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.07),
+      0 10px 15px -3px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.60);
+  }
+
+  /* ── Gradient text ── */
+  .gradient-text {
+    background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* ── Gradient background (buttons, badges) ── */
+  .gradient-bg {
+    background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #7c3aed 100%);
+  }
+
+  /* ── Shine overlay on cards ── */
+  .shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .shine::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.18) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-20deg);
+    pointer-events: none;
+    animation: shine 4s ease-in-out infinite;
+  }
+
+  /* ── Floating blobs ── */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* ── Slow pulse (sparkle icons etc.) ── */
+  .animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+  }
+
+  /* ── Fade-in (AI response reveal) ── */
+  .animate-fade-in {
+    animation: fade-in 0.4s ease-out both;
+  }
+
+  /* ── Keyframes ── */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-12px); }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.65; }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes shine {
+    0%   { left: -75%; }
+    60%  { left: 125%; }
+    100% { left: 125%; }
+  }
+
+  /* ── Reduced-motion overrides ── */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-pulse-slow,
+    .animate-fade-in,
+    .shine::before {
+      animation: none;
+    }
+  }
+}
