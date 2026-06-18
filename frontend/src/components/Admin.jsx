@@ -23,11 +23,16 @@ import {
   TrendingUp,
   Target,
   Gauge,
-  X
+  X,
+  Mail,
+  Phone,
+  User,
+  MessageCircle,
+  Calendar
 } from 'lucide-react';
 import Link from 'next/link';
 import { ticketAPI } from '../app/lib/api';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import toast from 'react-hot-toast';
 import styles from './Admin.module.css';
 
@@ -80,7 +85,6 @@ const AdminLogin = ({ onLogin, onClose }) => {
       
       <div className={styles.loginContainer}>
         <div className={styles.loginCard}>
-          {/* Close Button */}
           {onClose && (
             <button onClick={onClose} className={styles.loginCloseBtn}>
               <X size={20} />
@@ -204,10 +208,9 @@ const SettingsModal = ({ isOpen, onClose, onUpdateSettings }) => {
 const Admin = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState('new'); // Changed: Default to 'new'
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [showLogin, setShowLogin] = useState(true);
   const [adminCredentials, setAdminCredentials] = useState({ username: 'admin', password: '1234' });
 
   useEffect(() => {
@@ -233,10 +236,21 @@ const Admin = () => {
 
   const updateTicketStatus = async (ticketId, newStatus) => {
     try {
-      setTickets(tickets.map(t => 
+      // Update local state
+      const updatedTickets = tickets.map(t => 
         t.id === ticketId ? { ...t, status: newStatus } : t
-      ));
-      toast.success(`✅ Ticket moved to ${newStatus}`);
+      );
+      setTickets(updatedTickets);
+      
+      // Show success message
+      const statusEmojis = {
+        'New': '🆕',
+        'In Progress': '⏳',
+        'Resolved': '✅',
+        'Closed': '📦'
+      };
+      toast.success(`${statusEmojis[newStatus] || '📌'} Ticket moved to ${newStatus}`);
+      
     } catch (error) {
       toast.error('Failed to update status');
     }
@@ -256,6 +270,7 @@ const Admin = () => {
     }
   }, []);
 
+  // Filter tickets based on active tab
   const getFilteredTickets = () => {
     if (activeTab === 'all') return tickets;
     if (activeTab === 'new') return tickets.filter(t => t.status === 'New');
@@ -273,7 +288,6 @@ const Admin = () => {
     resolved: tickets.filter(t => t.status === 'Resolved' || t.status === 'Closed').length,
   };
 
-  // Handle close login - go back to home
   const handleCloseLogin = () => {
     window.location.href = '/';
   };
@@ -407,29 +421,45 @@ const Admin = () => {
                 <div className={styles.ticketHeader}>
                   <div className={styles.ticketBadges}>
                     <PriorityBadge priority={ticket.priority} />
-                    <span className={styles.categoryBadge}>{ticket.category}</span>
+                    <span className={styles.categoryBadge}>{ticket.category || 'General'}</span>
                     <StatusBadge status={ticket.status || 'New'} />
                   </div>
                   <span className={styles.ticketTime}>
+                    <Calendar size={12} />
                     {ticket.created_at ? formatDistanceToNow(new Date(ticket.created_at), { addSuffix: true }) : 'Just now'}
                   </span>
                 </div>
 
-                <h3 className={styles.ticketName}>
-                  {ticket.customer_name || 'Anonymous User'}
-                </h3>
-                <p className={styles.ticketMessage}>{ticket.message}</p>
-
-                <div className={styles.ticketMeta}>
-                  <span><Mail size={14} /> {ticket.customer_email || 'No email'}</span>
-                  <span><Phone size={14} /> {ticket.customer_phone || 'No phone'}</span>
+                {/* Customer Info */}
+                <div className={styles.ticketCustomer}>
+                  <div className={styles.customerAvatar}>
+                    <User size={20} />
+                  </div>
+                  <div className={styles.customerInfo}>
+                    <h3 className={styles.customerName}>{ticket.customer_name || 'Anonymous User'}</h3>
+                    <p className={styles.customerMessage}>{ticket.message}</p>
+                  </div>
                 </div>
 
+                {/* Contact Info */}
+                <div className={styles.ticketContact}>
+                  <div className={styles.contactItem}>
+                    <Mail size={14} />
+                    <span>{ticket.customer_email || 'No email provided'}</span>
+                  </div>
+                  <div className={styles.contactItem}>
+                    <Phone size={14} />
+                    <span>{ticket.customer_phone || 'No phone provided'}</span>
+                  </div>
+                </div>
+
+                {/* AI Suggestion */}
                 <div className={styles.ticketResponse}>
                   <span className={styles.responseLabel}>🤖 AI Suggestion</span>
-                  <p>{ticket.response}</p>
+                  <p>{ticket.response || 'No AI suggestion available'}</p>
                 </div>
 
+                {/* Actions */}
                 <div className={styles.ticketActions}>
                   <span className={styles.actionLabel}>Move to:</span>
                   {ticket.status !== 'New' && (

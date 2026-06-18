@@ -35,11 +35,11 @@ export default function RootLayout({ children }) {
                   Submit Ticket
                 </Link>
                 <Link 
-                  href="/admin" 
+                  href="/dashboard" 
                   className="flex items-center gap-2 px-4 py-2 gradient-bg text-white rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-xl hover:scale-105 transition-all duration-200 font-medium"
                 >
                   <LayoutDashboard className="w-4 h-4" />
-                  Admin Dashboard
+                  Admin
                 </Link>
               </div>
             </div>
