@@ -80,7 +80,7 @@ const Tickets = () => {
         setSubmitted(false);
         setIsSubmitting(false);
         setTicketResponse(null);
-      }, 8000);
+      }, 80000);
     } catch (error) {
       toast.error('❌ Failed to submit ticket. Please try again.');
       setIsSubmitting(false);
