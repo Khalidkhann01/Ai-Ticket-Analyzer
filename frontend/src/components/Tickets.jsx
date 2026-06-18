@@ -17,7 +17,8 @@ import {
   ChevronRight,
   Brain,
   Lightbulb,
-  ListChecks
+  ListChecks,
+  AlertCircle
 } from 'lucide-react';
 import Link from 'next/link';
 import { ticketAPI } from '../app/lib/api';
@@ -34,6 +35,7 @@ const Tickets = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [ticketResponse, setTicketResponse] = useState(null);
+  const [showResponse, setShowResponse] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,10 +43,35 @@ const Tickets = () => {
     
     try {
       const response = await ticketAPI.submitTicket(ticketData);
-      setTicketResponse(response);
+      
+      // Parse the AI response to extract suggestions
+      let parsedResponse = response;
+      
+      // If response has output field (from AI Agent), parse it
+      if (response.output) {
+        try {
+          // Clean the response (remove markdown code blocks if any)
+          let cleanedOutput = response.output;
+          if (typeof cleanedOutput === 'string') {
+            cleanedOutput = cleanedOutput.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+            parsedResponse = JSON.parse(cleanedOutput);
+          } else {
+            parsedResponse = cleanedOutput;
+          }
+        } catch (e) {
+          console.error('Failed to parse AI response:', e);
+          parsedResponse = response;
+        }
+      }
+      
+      setTicketResponse(parsedResponse);
+      setShowResponse(true);
       setSubmitted(true);
       toast.success('✅ Ticket submitted successfully! AI is analyzing your request.');
+      
+      // Auto-hide after 8 seconds
       setTimeout(() => {
+        setShowResponse(false);
         setTicketData({
           customer_name: '',
           customer_email: '',
@@ -53,14 +80,15 @@ const Tickets = () => {
         });
         setSubmitted(false);
         setIsSubmitting(false);
-      }, 5000);
+        setTicketResponse(null);
+      }, 8000);
     } catch (error) {
       toast.error('❌ Failed to submit ticket. Please try again.');
       setIsSubmitting(false);
     }
   };
 
-  if (submitted) {
+  if (submitted && showResponse) {
     return (
       <div className={styles.wrapper}>
         <div className={styles.bgGradient} />
@@ -75,30 +103,46 @@ const Tickets = () => {
               <CheckCircle size={48} />
             </div>
             <h2>Ticket Submitted! 🎉</h2>
-            <p>Our AI is analyzing your request. You'll receive a response shortly.</p>
+            <p>Our AI has analyzed your request. Here's what we found:</p>
             
             {ticketResponse && (
               <div className={styles.responsePreview}>
-                <div className={styles.responseHeader}>
-                  <Lightbulb size={18} />
-                  <span>AI Analysis</span>
-                </div>
+                {/* Category & Priority */}
                 <div className={styles.responseBadges}>
-                  <span className={styles.categoryBadge}>
-                    Category: {ticketResponse.category || 'Processing...'}
-                  </span>
-                  <span className={`${styles.priorityBadge} ${
-                    ticketResponse.priority === 'High' ? styles.priorityHigh : 
-                    ticketResponse.priority === 'Medium' ? styles.priorityMedium : 
-                    styles.priorityLow
-                  }`}>
-                    Priority: {ticketResponse.priority || 'Detecting...'}
-                  </span>
+                  {ticketResponse.category && (
+                    <span className={styles.categoryBadge}>
+                      📂 {ticketResponse.category}
+                    </span>
+                  )}
+                  {ticketResponse.priority && (
+                    <span className={`${styles.priorityBadge} ${
+                      ticketResponse.priority === 'High' ? styles.priorityHigh : 
+                      ticketResponse.priority === 'Medium' ? styles.priorityMedium : 
+                      styles.priorityLow
+                    }`}>
+                      ⚡ {ticketResponse.priority} Priority
+                    </span>
+                  )}
+                  {ticketResponse.confidence && (
+                    <span className={styles.confidenceBadge}>
+                      🎯 {(ticketResponse.confidence * 100).toFixed(0)}% confidence
+                    </span>
+                  )}
                 </div>
-                {ticketResponse.customerSuggestions && (
+
+                {/* Reasoning */}
+                {ticketResponse.reason && (
+                  <div className={styles.reasonBox}>
+                    <AlertCircle size={14} />
+                    <span>{ticketResponse.reason}</span>
+                  </div>
+                )}
+
+                {/* Customer Suggestions */}
+                {ticketResponse.customerSuggestions && ticketResponse.customerSuggestions.length > 0 && (
                   <div className={styles.suggestions}>
                     <p className={styles.suggestionsTitle}>
-                      <ListChecks size={16} /> Possible Solutions:
+                      <Lightbulb size={16} /> Suggested Solutions for You:
                     </p>
                     <ul>
                       {ticketResponse.customerSuggestions.map((suggestion, idx) => (
@@ -107,12 +151,48 @@ const Tickets = () => {
                     </ul>
                   </div>
                 )}
+
+                {/* Fallback if no suggestions */}
+                {(!ticketResponse.customerSuggestions || ticketResponse.customerSuggestions.length === 0) && (
+                  <div className={styles.suggestions}>
+                    <p className={styles.suggestionsTitle}>
+                      <Lightbulb size={16} /> Quick Tips:
+                    </p>
+                    <ul>
+                      <li>Please check your internet connection</li>
+                      <li>Try clearing your browser cache</li>
+                      <li>Restart the application and try again</li>
+                      <li>If the issue persists, our team will contact you shortly</li>
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
             
-            <Link href="/" className={styles.primaryBtn}>
-              <ArrowLeft size={18} /> Back to Home
-            </Link>
+            <div className={styles.successActions}>
+              <Link href="/" className={styles.primaryBtn}>
+                <ArrowLeft size={18} /> Back to Home
+              </Link>
+              <button 
+                onClick={() => {
+                  setShowResponse(false);
+                  setTicketData({
+                    customer_name: '',
+                    customer_email: '',
+                    customer_phone: '',
+                    message: '',
+                  });
+                  setSubmitted(false);
+                  setIsSubmitting(false);
+                  setTicketResponse(null);
+                }}
+                className={styles.secondaryBtn}
+              >
+                Submit Another
+              </button>
+            </div>
+            
+            <p className={styles.autoDismiss}>This will auto-dismiss in a few seconds</p>
           </div>
         </div>
       </div>
@@ -139,7 +219,7 @@ const Tickets = () => {
               <Ticket size={28} />
             </div>
             <h1>Submit a Ticket</h1>
-            <p>Our AI will analyze and route your request automatically</p>
+            <p>Our AI will analyze and suggest solutions for your issue</p>
           </div>
 
           <form onSubmit={handleSubmit} className={styles.form}>

@@ -430,4 +430,386 @@
     font-size: 0.75rem;
     margin-bottom: 0.8rem;
   }
+}/* components/Tickets.module.css - Add these new styles */
+/* Response Preview in Success Card */
+.responsePreview {
+  margin: 1.2rem 0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  text-align: left;
+}
+
+.responseHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fb923c;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 0.8rem;
+}
+
+.responseBadges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+
+.categoryBadge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  background: rgba(139, 92, 246, 0.2);
+  color: #a78bfa;
+}
+
+.priorityBadge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.priorityHigh {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.priorityMedium {
+  background: rgba(249, 115, 22, 0.2);
+  color: #fb923c;
+}
+
+.priorityLow {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+.suggestions {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.suggestionsTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #d1d5db;
+  margin-bottom: 0.4rem;
+}
+
+.suggestions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions ul li {
+  position: relative;
+  padding: 0.3rem 0 0.3rem 1.2rem;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  line-height: 1.4;
+}
+
+.suggestions ul li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #fb923c;
+}
+
+/* Update success card to handle more content */
+.successCard {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 2.5rem;
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.successCard::-webkit-scrollbar {
+  width: 4px;
+}
+
+.successCard::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.successCard::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.3);
+  border-radius: 4px;
+}
+
+/* Responsive updates */
+@media (max-width: 768px) {
+  .successCard {
+    padding: 1.5rem;
+    max-width: 100%;
+    margin: 0 0.5rem;
+  }
+  
+  .responsePreview {
+    padding: 0.8rem;
+  }
+  
+  .suggestions ul li {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .responseBadges {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  
+  .categoryBadge,
+  .priorityBadge {
+    font-size: 0.65rem;
+    display: inline-block;
+    width: fit-content;
+  }
+}
+/* components/Tickets.module.css - Add these styles */
+/* Response Preview */
+.responsePreview {
+  margin: 1.2rem 0;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  text-align: left;
+}
+
+.responseBadges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+
+.categoryBadge {
+  padding: 0.25rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: rgba(139, 92, 246, 0.2);
+  color: #a78bfa;
+}
+
+.priorityBadge {
+  padding: 0.25rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.priorityHigh {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.priorityMedium {
+  background: rgba(249, 115, 22, 0.2);
+  color: #fb923c;
+}
+
+.priorityLow {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+.confidenceBadge {
+  padding: 0.25rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+}
+
+.reasonBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.8rem;
+  color: #d1d5db;
+  line-height: 1.4;
+}
+
+.reasonBox svg {
+  flex-shrink: 0;
+  color: #fb923c;
+  margin-top: 0.1rem;
+}
+
+.suggestions {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.suggestionsTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fb923c;
+  margin-bottom: 0.4rem;
+}
+
+.suggestions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions ul li {
+  position: relative;
+  padding: 0.35rem 0 0.35rem 1.2rem;
+  font-size: 0.82rem;
+  color: #d1d5db;
+  line-height: 1.5;
+}
+
+.suggestions ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #fb923c;
+  font-weight: 600;
+}
+
+/* Success Actions */
+.successActions {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.7rem 1.5rem;
+  border-radius: 60px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.secondaryBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.autoDismiss {
+  font-size: 0.7rem;
+  color: #6b7280;
+  margin-top: 0.8rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Update success card */
+.successCard {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 2.5rem;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.successCard::-webkit-scrollbar {
+  width: 4px;
+}
+
+.successCard::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.successCard::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.3);
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .successCard {
+    padding: 1.5rem;
+    max-width: 100%;
+    margin: 0 0.5rem;
+  }
+  
+  .responsePreview {
+    padding: 0.8rem;
+  }
+  
+  .suggestions ul li {
+    font-size: 0.75rem;
+  }
+  
+  .successActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .secondaryBtn {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .responseBadges {
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: flex-start;
+  }
+  
+  .categoryBadge,
+  .priorityBadge,
+  .confidenceBadge {
+    font-size: 0.65rem;
+    display: inline-block;
+  }
+  
+  .reasonBox {
+    font-size: 0.75rem;
+  }
 }
