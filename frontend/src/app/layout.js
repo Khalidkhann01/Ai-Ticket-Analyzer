@@ -10,6 +10,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
   title: 'AI Ticket System',
   description: 'AI-Powered Ticket Intelligence System',
+ 
 };
 
 export default function RootLayout({ children }) {
