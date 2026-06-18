@@ -7,7 +7,6 @@ import {
   Mail, 
   Phone, 
   MessageCircle, 
-  AlertTriangle,
   Send,
   CheckCircle,
   ArrowLeft,
@@ -15,7 +14,10 @@ import {
   Zap,
   Shield,
   Clock,
-  ChevronRight
+  ChevronRight,
+  Brain,
+  Lightbulb,
+  ListChecks
 } from 'lucide-react';
 import Link from 'next/link';
 import { ticketAPI } from '../app/lib/api';
@@ -28,17 +30,18 @@ const Tickets = () => {
     customer_email: '',
     customer_phone: '',
     message: '',
-    priority: 'Medium'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [ticketResponse, setTicketResponse] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      await ticketAPI.submitTicket(ticketData);
+      const response = await ticketAPI.submitTicket(ticketData);
+      setTicketResponse(response);
       setSubmitted(true);
       toast.success('✅ Ticket submitted successfully! AI is analyzing your request.');
       setTimeout(() => {
@@ -47,11 +50,10 @@ const Tickets = () => {
           customer_email: '',
           customer_phone: '',
           message: '',
-          priority: 'Medium'
         });
         setSubmitted(false);
         setIsSubmitting(false);
-      }, 3000);
+      }, 5000);
     } catch (error) {
       toast.error('❌ Failed to submit ticket. Please try again.');
       setIsSubmitting(false);
@@ -74,6 +76,40 @@ const Tickets = () => {
             </div>
             <h2>Ticket Submitted! 🎉</h2>
             <p>Our AI is analyzing your request. You'll receive a response shortly.</p>
+            
+            {ticketResponse && (
+              <div className={styles.responsePreview}>
+                <div className={styles.responseHeader}>
+                  <Lightbulb size={18} />
+                  <span>AI Analysis</span>
+                </div>
+                <div className={styles.responseBadges}>
+                  <span className={styles.categoryBadge}>
+                    Category: {ticketResponse.category || 'Processing...'}
+                  </span>
+                  <span className={`${styles.priorityBadge} ${
+                    ticketResponse.priority === 'High' ? styles.priorityHigh : 
+                    ticketResponse.priority === 'Medium' ? styles.priorityMedium : 
+                    styles.priorityLow
+                  }`}>
+                    Priority: {ticketResponse.priority || 'Detecting...'}
+                  </span>
+                </div>
+                {ticketResponse.customerSuggestions && (
+                  <div className={styles.suggestions}>
+                    <p className={styles.suggestionsTitle}>
+                      <ListChecks size={16} /> Possible Solutions:
+                    </p>
+                    <ul>
+                      {ticketResponse.customerSuggestions.map((suggestion, idx) => (
+                        <li key={idx}>{suggestion}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+            
             <Link href="/" className={styles.primaryBtn}>
               <ArrowLeft size={18} /> Back to Home
             </Link>
@@ -94,13 +130,13 @@ const Tickets = () => {
 
       <div className={styles.container}>
         <Link href="/" className={styles.backBtn}>
-          <ArrowLeft size={18} /> Back to Home
+          <ArrowLeft size={16} /> Back to Home
         </Link>
 
         <div className={styles.ticketCard}>
           <div className={styles.cardHeader}>
             <div className={styles.headerIcon}>
-              <Ticket size={32} />
+              <Ticket size={28} />
             </div>
             <h1>Submit a Ticket</h1>
             <p>Our AI will analyze and route your request automatically</p>
@@ -109,7 +145,7 @@ const Tickets = () => {
           <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label><User size={16} /> Full Name <span className={styles.required}>*</span></label>
+                <label><User size={14} /> Full Name <span className={styles.required}>*</span></label>
                 <input
                   type="text"
                   placeholder="John Doe"
@@ -120,7 +156,7 @@ const Tickets = () => {
               </div>
 
               <div className={styles.formGroup}>
-                <label><Mail size={16} /> Email <span className={styles.required}>*</span></label>
+                <label><Mail size={14} /> Email <span className={styles.required}>*</span></label>
                 <input
                   type="email"
                   placeholder="john@example.com"
@@ -131,39 +167,30 @@ const Tickets = () => {
               </div>
             </div>
 
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label><Phone size={16} /> Phone (optional)</label>
-                <input
-                  type="tel"
-                  placeholder="+1 (555) 000-0000"
-                  value={ticketData.customer_phone}
-                  onChange={(e) => setTicketData({...ticketData, customer_phone: e.target.value})}
-                />
-              </div>
-
-              <div className={styles.formGroup}>
-                <label><AlertTriangle size={16} /> Priority</label>
-                <select
-                  value={ticketData.priority}
-                  onChange={(e) => setTicketData({...ticketData, priority: e.target.value})}
-                >
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                </select>
-              </div>
+            <div className={styles.formGroup}>
+              <label><Phone size={14} /> Phone (optional)</label>
+              <input
+                type="tel"
+                placeholder="+1 (555) 000-0000"
+                value={ticketData.customer_phone}
+                onChange={(e) => setTicketData({...ticketData, customer_phone: e.target.value})}
+              />
             </div>
 
             <div className={styles.formGroup}>
-              <label><MessageCircle size={16} /> Message <span className={styles.required}>*</span></label>
+              <label><MessageCircle size={14} /> Message <span className={styles.required}>*</span></label>
               <textarea
                 placeholder="Describe your issue in detail..."
-                rows="5"
+                rows="4"
                 value={ticketData.message}
                 onChange={(e) => setTicketData({...ticketData, message: e.target.value})}
                 required
               />
+            </div>
+
+            <div className={styles.aiBadge}>
+              <Brain size={16} />
+              <span>AI will automatically detect priority and suggest solutions</span>
             </div>
 
             <button 
@@ -175,7 +202,7 @@ const Tickets = () => {
                 <>Processing...</>
               ) : (
                 <>
-                  <Send size={18} /> Submit Ticket <ChevronRight size={18} />
+                  <Send size={16} /> Submit Ticket <ChevronRight size={16} />
                 </>
               )}
             </button>
