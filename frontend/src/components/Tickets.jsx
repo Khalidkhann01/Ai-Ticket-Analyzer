@@ -50,7 +50,6 @@ const Tickets = () => {
       // If response has output field (from AI Agent), parse it
       if (response.output) {
         try {
-          // Clean the response (remove markdown code blocks if any)
           let cleanedOutput = response.output;
           if (typeof cleanedOutput === 'string') {
             cleanedOutput = cleanedOutput.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -67,7 +66,7 @@ const Tickets = () => {
       setTicketResponse(parsedResponse);
       setShowResponse(true);
       setSubmitted(true);
-      toast.success('✅ Ticket submitted successfully! AI is analyzing your request.');
+      toast.success('✅ Ticket submitted successfully!');
       
       // Auto-hide after 8 seconds
       setTimeout(() => {
@@ -103,46 +102,15 @@ const Tickets = () => {
               <CheckCircle size={48} />
             </div>
             <h2>Ticket Submitted! 🎉</h2>
-            <p>Our AI has analyzed your request. Here's what we found:</p>
+            <p>Our AI has analyzed your request. Here are some steps you can try:</p>
             
             {ticketResponse && (
               <div className={styles.responsePreview}>
-                {/* Category & Priority */}
-                <div className={styles.responseBadges}>
-                  {ticketResponse.category && (
-                    <span className={styles.categoryBadge}>
-                      📂 {ticketResponse.category}
-                    </span>
-                  )}
-                  {ticketResponse.priority && (
-                    <span className={`${styles.priorityBadge} ${
-                      ticketResponse.priority === 'High' ? styles.priorityHigh : 
-                      ticketResponse.priority === 'Medium' ? styles.priorityMedium : 
-                      styles.priorityLow
-                    }`}>
-                      ⚡ {ticketResponse.priority} Priority
-                    </span>
-                  )}
-                  {ticketResponse.confidence && (
-                    <span className={styles.confidenceBadge}>
-                      🎯 {(ticketResponse.confidence * 100).toFixed(0)}% confidence
-                    </span>
-                  )}
-                </div>
-
-                {/* Reasoning */}
-                {ticketResponse.reason && (
-                  <div className={styles.reasonBox}>
-                    <AlertCircle size={14} />
-                    <span>{ticketResponse.reason}</span>
-                  </div>
-                )}
-
-                {/* Customer Suggestions */}
-                {ticketResponse.customerSuggestions && ticketResponse.customerSuggestions.length > 0 && (
+                {/* Customer Suggestions - Only show these to the user */}
+                {ticketResponse.customerSuggestions && ticketResponse.customerSuggestions.length > 0 ? (
                   <div className={styles.suggestions}>
                     <p className={styles.suggestionsTitle}>
-                      <Lightbulb size={16} /> Suggested Solutions for You:
+                      <Lightbulb size={16} /> Suggested Solutions:
                     </p>
                     <ul>
                       {ticketResponse.customerSuggestions.map((suggestion, idx) => (
@@ -150,20 +118,26 @@ const Tickets = () => {
                       ))}
                     </ul>
                   </div>
-                )}
-
-                {/* Fallback if no suggestions */}
-                {(!ticketResponse.customerSuggestions || ticketResponse.customerSuggestions.length === 0) && (
+                ) : (
                   <div className={styles.suggestions}>
                     <p className={styles.suggestionsTitle}>
-                      <Lightbulb size={16} /> Quick Tips:
+                      <Lightbulb size={16} /> Quick Troubleshooting Steps:
                     </p>
                     <ul>
                       <li>Please check your internet connection</li>
-                      <li>Try clearing your browser cache</li>
+                      <li>Try clearing your browser cache and cookies</li>
                       <li>Restart the application and try again</li>
+                      <li>Make sure you're using the latest version</li>
                       <li>If the issue persists, our team will contact you shortly</li>
                     </ul>
+                  </div>
+                )}
+
+                {/* AI Reasoning - Helpful context for the user */}
+                {ticketResponse.reason && (
+                  <div className={styles.reasonBox}>
+                    <AlertCircle size={14} />
+                    <span>{ticketResponse.reason}</span>
                   </div>
                 )}
               </div>
@@ -219,7 +193,7 @@ const Tickets = () => {
               <Ticket size={28} />
             </div>
             <h1>Submit a Ticket</h1>
-            <p>Our AI will analyze and suggest solutions for your issue</p>
+            <p>Our AI will analyze your issue and suggest solutions</p>
           </div>
 
           <form onSubmit={handleSubmit} className={styles.form}>
@@ -270,7 +244,7 @@ const Tickets = () => {
 
             <div className={styles.aiBadge}>
               <Brain size={16} />
-              <span>AI will automatically detect priority and suggest solutions</span>
+              <span>AI will analyze your issue and suggest solutions</span>
             </div>
 
             <button 

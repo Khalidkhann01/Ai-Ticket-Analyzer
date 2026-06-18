@@ -184,7 +184,6 @@
 }
 
 .formGroup input,
-.formGroup select,
 .formGroup textarea {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -197,7 +196,6 @@
 }
 
 .formGroup input:focus,
-.formGroup select:focus,
 .formGroup textarea:focus {
   outline: none;
   border-color: #f97316;
@@ -213,18 +211,6 @@
 .formGroup textarea {
   resize: vertical;
   min-height: 80px;
-}
-
-.formGroup select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.9rem center;
-  cursor: pointer;
-}
-
-.formGroup select option {
-  background: #1a1d23;
 }
 
 /* AI Badge */
@@ -296,7 +282,7 @@
   cursor: not-allowed;
 }
 
-/* Success */
+/* ===== SUCCESS SCREEN ===== */
 .successContainer {
   display: flex;
   align-items: center;
@@ -313,8 +299,23 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 20px;
   padding: 2.5rem;
-  max-width: 420px;
+  max-width: 520px;
   width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.successCard::-webkit-scrollbar {
+  width: 4px;
+}
+
+.successCard::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.successCard::-webkit-scrollbar-thumb {
+  background: rgba(249, 115, 22, 0.3);
+  border-radius: 4px;
 }
 
 .successIcon {
@@ -349,242 +350,7 @@
   margin-bottom: 1.5rem;
 }
 
-.successCard .primaryBtn {
-  margin: 0 auto;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .wrapper {
-    padding: 0.8rem;
-  }
-  
-  .ticketCard {
-    padding: 1.2rem;
-    border-radius: 16px;
-  }
-  
-  .formRow {
-    grid-template-columns: 1fr;
-    gap: 0.7rem;
-  }
-  
-  .cardHeader h1 {
-    font-size: 1.4rem;
-  }
-  
-  .cardHeader p {
-    font-size: 0.8rem;
-  }
-  
-  .successCard {
-    padding: 1.5rem;
-  }
-  
-  .container {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .ticketCard {
-    padding: 1rem;
-  }
-  
-  .formGroup input,
-  .formGroup select,
-  .formGroup textarea {
-    font-size: 0.8rem;
-    padding: 0.5rem 0.7rem;
-  }
-  
-  .formGroup label {
-    font-size: 0.7rem;
-  }
-  
-  .primaryBtn {
-    padding: 0.7rem 1.2rem;
-    font-size: 0.8rem;
-  }
-  
-  .cardHeader h1 {
-    font-size: 1.2rem;
-  }
-  
-  .headerIcon {
-    width: 44px;
-    height: 44px;
-  }
-  
-  .headerIcon svg {
-    width: 22px;
-    height: 22px;
-  }
-  
-  .aiBadge {
-    font-size: 0.7rem;
-    padding: 0.4rem 0.6rem;
-  }
-  
-  .backBtn {
-    font-size: 0.75rem;
-    margin-bottom: 0.8rem;
-  }
-}/* components/Tickets.module.css - Add these new styles */
-/* Response Preview in Success Card */
-.responsePreview {
-  margin: 1.2rem 0;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  text-align: left;
-}
-
-.responseHeader {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #fb923c;
-  font-weight: 600;
-  font-size: 0.85rem;
-  margin-bottom: 0.8rem;
-}
-
-.responseBadges {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.8rem;
-}
-
-.categoryBadge {
-  padding: 0.2rem 0.6rem;
-  border-radius: 20px;
-  font-size: 0.7rem;
-  font-weight: 500;
-  background: rgba(139, 92, 246, 0.2);
-  color: #a78bfa;
-}
-
-.priorityBadge {
-  padding: 0.2rem 0.6rem;
-  border-radius: 20px;
-  font-size: 0.7rem;
-  font-weight: 500;
-}
-
-.priorityHigh {
-  background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
-}
-
-.priorityMedium {
-  background: rgba(249, 115, 22, 0.2);
-  color: #fb923c;
-}
-
-.priorityLow {
-  background: rgba(34, 197, 94, 0.2);
-  color: #4ade80;
-}
-
-.suggestions {
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.suggestionsTitle {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #d1d5db;
-  margin-bottom: 0.4rem;
-}
-
-.suggestions ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.suggestions ul li {
-  position: relative;
-  padding: 0.3rem 0 0.3rem 1.2rem;
-  font-size: 0.8rem;
-  color: #9ca3af;
-  line-height: 1.4;
-}
-
-.suggestions ul li::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  color: #fb923c;
-}
-
-/* Update success card to handle more content */
-.successCard {
-  text-align: center;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 20px;
-  padding: 2.5rem;
-  max-width: 480px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.successCard::-webkit-scrollbar {
-  width: 4px;
-}
-
-.successCard::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.successCard::-webkit-scrollbar-thumb {
-  background: rgba(249, 115, 22, 0.3);
-  border-radius: 4px;
-}
-
-/* Responsive updates */
-@media (max-width: 768px) {
-  .successCard {
-    padding: 1.5rem;
-    max-width: 100%;
-    margin: 0 0.5rem;
-  }
-  
-  .responsePreview {
-    padding: 0.8rem;
-  }
-  
-  .suggestions ul li {
-    font-size: 0.75rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .responseBadges {
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-  
-  .categoryBadge,
-  .priorityBadge {
-    font-size: 0.65rem;
-    display: inline-block;
-    width: fit-content;
-  }
-}
-/* components/Tickets.module.css - Add these styles */
-/* Response Preview */
+/* Response Preview - Customer Suggestions Only */
 .responsePreview {
   margin: 1.2rem 0;
   padding: 1.2rem;
@@ -594,77 +360,8 @@
   text-align: left;
 }
 
-.responseBadges {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.8rem;
-}
-
-.categoryBadge {
-  padding: 0.25rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  background: rgba(139, 92, 246, 0.2);
-  color: #a78bfa;
-}
-
-.priorityBadge {
-  padding: 0.25rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.priorityHigh {
-  background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
-}
-
-.priorityMedium {
-  background: rgba(249, 115, 22, 0.2);
-  color: #fb923c;
-}
-
-.priorityLow {
-  background: rgba(34, 197, 94, 0.2);
-  color: #4ade80;
-}
-
-.confidenceBadge {
-  padding: 0.25rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  background: rgba(59, 130, 246, 0.2);
-  color: #60a5fa;
-}
-
-.reasonBox {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  padding: 0.6rem 0.8rem;
-  margin-bottom: 0.8rem;
-  font-size: 0.8rem;
-  color: #d1d5db;
-  line-height: 1.4;
-}
-
-.reasonBox svg {
-  flex-shrink: 0;
-  color: #fb923c;
-  margin-top: 0.1rem;
-}
-
 .suggestions {
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 0.5rem;
 }
 
 .suggestionsTitle {
@@ -674,7 +371,7 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: #fb923c;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.6rem;
 }
 
 .suggestions ul {
@@ -685,10 +382,15 @@
 
 .suggestions ul li {
   position: relative;
-  padding: 0.35rem 0 0.35rem 1.2rem;
-  font-size: 0.82rem;
+  padding: 0.4rem 0 0.4rem 1.4rem;
+  font-size: 0.85rem;
   color: #d1d5db;
   line-height: 1.5;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.suggestions ul li:last-child {
+  border-bottom: none;
 }
 
 .suggestions ul li::before {
@@ -697,6 +399,27 @@
   left: 0;
   color: #fb923c;
   font-weight: 600;
+}
+
+/* AI Reasoning - Helpful context */
+.reasonBox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #d1d5db;
+  line-height: 1.4;
+}
+
+.reasonBox svg {
+  flex-shrink: 0;
+  color: #fb923c;
+  margin-top: 0.1rem;
 }
 
 /* Success Actions */
@@ -742,39 +465,38 @@
   50% { opacity: 1; }
 }
 
-/* Update success card */
-.successCard {
-  text-align: center;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 20px;
-  padding: 2.5rem;
-  max-width: 520px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.successCard::-webkit-scrollbar {
-  width: 4px;
-}
-
-.successCard::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.successCard::-webkit-scrollbar-thumb {
-  background: rgba(249, 115, 22, 0.3);
-  border-radius: 4px;
-}
-
-/* Responsive */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
+  .wrapper {
+    padding: 0.8rem;
+  }
+  
+  .ticketCard {
+    padding: 1.2rem;
+    border-radius: 16px;
+  }
+  
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+  
+  .cardHeader h1 {
+    font-size: 1.4rem;
+  }
+  
+  .cardHeader p {
+    font-size: 0.8rem;
+  }
+  
   .successCard {
     padding: 1.5rem;
     max-width: 100%;
     margin: 0 0.5rem;
+  }
+  
+  .container {
+    max-width: 100%;
   }
   
   .responsePreview {
@@ -782,7 +504,8 @@
   }
   
   .suggestions ul li {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
+    padding: 0.3rem 0 0.3rem 1.2rem;
   }
   
   .successActions {
@@ -796,20 +519,58 @@
 }
 
 @media (max-width: 480px) {
-  .responseBadges {
-    flex-direction: column;
-    gap: 0.3rem;
-    align-items: flex-start;
+  .ticketCard {
+    padding: 1rem;
   }
   
-  .categoryBadge,
-  .priorityBadge,
-  .confidenceBadge {
-    font-size: 0.65rem;
-    display: inline-block;
+  .formGroup input,
+  .formGroup textarea {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.7rem;
+  }
+  
+  .formGroup label {
+    font-size: 0.7rem;
+  }
+  
+  .primaryBtn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.8rem;
+  }
+  
+  .cardHeader h1 {
+    font-size: 1.2rem;
+  }
+  
+  .headerIcon {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .headerIcon svg {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .aiBadge {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .backBtn {
+    font-size: 0.75rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .suggestions ul li {
+    font-size: 0.75rem;
   }
   
   .reasonBox {
     font-size: 0.75rem;
+  }
+  
+  .suggestionsTitle {
+    font-size: 0.8rem;
   }
 }
